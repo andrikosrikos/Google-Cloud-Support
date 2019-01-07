@@ -1,9 +1,12 @@
 #To test the code
-#Run python code
-#Navigate to /add 
-#Test if added by navigating to /get
-#Test the update by navigating to /update
-#After the update is executed the program will navigate automatically to /get to show you the updated result
+#When running the code follow these steps:
+#Navigating to localhost:8080 will print Hello World
+#Navigate to localhost:8080/add for the first time to enter the first value in entity. (Will add number 2)
+#Go to the Entities in the GCP page and get the id from the record
+#Replace that id with the one in the code ENTITY_KEY
+#Navigate to localhost:8080/get will print the number saved in the entity
+#Navigate to localhost:8080/update will get that number, add 1 to that number and will save the number again.
+#After that it will automatically redirect to localhost:8080/get and will show you the updated value in the entity
 
 from flask import Flask, redirect, url_for
 from google.cloud import datastore
