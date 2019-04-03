@@ -34,14 +34,16 @@
 ## Bucket
 ### blobs_python.py
 What it does:
+
 **Runtime:** Python
+
 **Required:**
+
 ```
 pip install flask
 pip install google-cloud-storage
 ```
 **What it does:**
-- Python runtime
 - List blobs
 - Delete blobs
 
