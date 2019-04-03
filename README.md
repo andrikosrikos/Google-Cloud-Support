@@ -1,7 +1,7 @@
 # Google-Cloud-Support
 
 ## Sample Codes provided for SO support:
-## Structure:
+**Structure:**
 ```
 .
 └── Google-Cloud-Support
@@ -30,3 +30,18 @@
     │   └── multiple_features_request_single_API_call.py
     └── README.md
 ```
+
+## Bucket
+### blobs_python.py
+What it does:
+**Runtime:** Python
+**Required:**
+```
+pip install flask
+pip install google-cloud-storage
+```
+**What it does:**
+- Python runtime
+- List blobs
+- Delete blobs
+
