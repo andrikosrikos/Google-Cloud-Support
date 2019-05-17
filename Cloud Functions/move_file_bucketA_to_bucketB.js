@@ -6,7 +6,7 @@ const storage = Storage();
 
 //Define bucket's name
 const srcBucketName = "[BUCKET_A]";
-const destBucketName = "[BUCKET_A]";
+const destBucketName = "[BUCKET_B]";
 
 exports.moveToBucket = (event, context) => {
   const gcsEvent = event;
