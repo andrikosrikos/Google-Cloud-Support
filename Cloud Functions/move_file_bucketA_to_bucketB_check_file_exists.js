@@ -4,51 +4,55 @@ const Storage = require('@google-cloud/storage');
 // Instantiates a client
 const storage = Storage();
 
+//Declare buckets
 const srcBucketName = "[BUCKET_A]";
 const destBucketName = "[BUCKET_B]";
 
-async function moveToBucket() {  
+exports.moveToBucket = async (event, context) => {
+ 
+    //Get the file's name form the event call
+    const gcsEvent = event;
+    const fileName = gcsEvent.name;
 
-    const fileName = "health";
-  //Log that have uploaded
-  console.log(`File: ${fileName} was uploaded!`);
-  
-  //Process the file
-  var response = await fileExists(fileName);
-  if (response == true){
-      //Found the file
-      console.log(`Found the file ${fileName}`);
-      //Process the file
-      processFile(fileName);
-      
-  }
-  else{
-      //Didn't found the file
-      //Don't do anything
-      console.log(`Didn't find the file ${fileName}`);
-  }
-  
+    //Log that have uploaded
+    console.log(`File: ${fileName} was uploaded!`);
 
-  
-}
+    //Process the file
+    var response = await fileExists(fileName);
+    if (response == true){
+        //Found the file
+        console.log(`Found the file ${fileName}`);
+        //Process the file
+        processFile(fileName);
 
+    }
+    else{
+        //Didn't found the file
+        //Don't do anything
+        console.log(`Didn't find the file ${fileName}`);
+    }
+ 
+};
+
+//Process the file
 async function processFile(srcFilename){
-    console.log(`Processing file: ${srcFilename}`);
+  
+	console.log(`Processing file: ${srcFilename}`);
 
     //After the processing is done check for file if existed and execute the copy command
     //Check if the file fileExists
-  response = await fileExists(srcFilename);
-  if (response == true){
-      //Found the file
-      console.log(`Found the file ${srcFilename}`);
-      //Copy it to different location
-      copyFile(srcFilename, srcFilename);
-  }
-  else{
-      //Didn't found the file
-      //Don't do anything
-      console.log(`Didn't find the file ${srcFilename}`);
-  }
+    response = await fileExists(srcFilename);
+    if (response == true){
+        //Found the file
+        console.log(`Found the file ${srcFilename}`);
+        //Copy it to different location
+        copyFile(srcFilename, srcFilename);
+    }
+    else{
+        //Didn't found the file
+        //Don't do anything
+        console.log(`Didn't find the file ${srcFilename}`);
+    }
 }
 
 //Check if file exists
@@ -106,12 +110,37 @@ async function deleteFile(srcFilename) {
   	file.delete(function(err, apiResponse) {});
 	console.log(`File gs://${srcBucketName}/${srcFilename} is deleted.`);
 
+    file.delete().then(async function(data) {
+        var apiResponse = data[0];
+        //Check if file exists and delete it if it is true
+        var response = await fileExists(srcFilename);
+        if (response == true){
+            //Found the file
+            console.log(`Found the file ${srcFilename}`);
+            //Delete it
+            deleteFileAgain(srcFilename);
+        }
+        else{
+            //Didn't found the file
+            //Don't do anything
+            console.log(`Didn't find the file ${srcFilename}`);
+        }
+    }).catch(function () {
+        console.log("Promise Rejected");
+    });
+}
+
+//Call this function to delete the file again, to avoid infinitive loop in case the deletion is failing all the time
+async function deleteFileAgain(srcFilename) {
+  	var myBucket = storage.bucket(srcBucketName);
+  	var file = myBucket.file(srcFilename);
+
+  	file.delete(function(err, apiResponse) {});
+	console.log(`File gs://${srcBucketName}/${srcFilename} is deleted.`);
+
     file.delete().then(function(data) {
         var apiResponse = data[0];
     }).catch(function () {
         console.log("Promise Rejected");
     });
 }
-
-moveToBucket(); 
-
