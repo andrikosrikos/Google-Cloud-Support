@@ -57,4 +57,4 @@ async function addNewTaskToCurrentSession(newTaskID){
     }
 }
 
-addNewTaskToCurrentSession("HAHA");
+addNewTaskToCurrentSession("NewTaskID");
