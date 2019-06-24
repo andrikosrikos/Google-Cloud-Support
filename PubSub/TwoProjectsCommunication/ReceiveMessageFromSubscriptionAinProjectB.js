@@ -4,7 +4,8 @@ to setup the TopicA and SubscriptionA in ProjectA
 
 Now to revceive message in ProjectB follow the steps below:
 1. In the "const subscriptionName = 'projects/[PROJECT_ID]/subscriptions/SubscriptionA';" section, change "[PROJECT_ID]" to your project ID.
-2. Execute the code below
+2. Allow cross project communication to PubSub [ https://cloud.google.com/pubsub/docs/access-control#cross-project ] 
+3. Execute the code below
 
 */
 
